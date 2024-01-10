@@ -7,13 +7,13 @@ import App from './app.js';
 /* const cli = meow(
 	`
 	Usage
-	  $ ts-app
+	  $ ironback
 
 	Options
 		--name  Your name
 
 	Examples
-	  $ ts-app --name=Jane
+	  $ ironback --name=Jane
 	  Hello, Jane
 `,
 	{

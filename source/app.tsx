@@ -32,18 +32,18 @@ const items: Item[] = [
 ];
 
 export default function App(/* {name = 'Stranger'}: Props */) {
-	const [projectName, setProjectName] = useState('');
 	const [projectType, setProjectType] = useState<string | undefined>();
 	const [, /* isFolderCreated */ setIsFolderCreated] = useState(false);
 
-	const createProjectFromTemplate = () => {
+	const createProjectFromTemplate = (projectName: string) => {
 		const __dirname = path.dirname(fileURLToPath(import.meta.url));
 		const templatesDir = path.join(__dirname, 'templates');
-		console.log(templatesDir);
 		const projectDir = path.join(process.cwd(), projectName);
+		console.log('Project directory path: ', projectDir);
 
 		// Ensure the project directory exists
 		if (!fs.existsSync(projectDir)) {
+			console.log("Don't exists");
 			fs.mkdirSync(projectDir);
 		}
 
@@ -58,12 +58,6 @@ export default function App(/* {name = 'Stranger'}: Props */) {
 		setIsFolderCreated(true);
 	};
 
-	const handleFolderNameSubmit = (name: string) => {
-		setProjectName(name);
-		createProjectFromTemplate();
-		// Further logic goes here (e.g., creating a folder)
-	};
-
 	return (
 		<Box
 			borderStyle="round"
@@ -73,7 +67,10 @@ export default function App(/* {name = 'Stranger'}: Props */) {
 		>
 			{projectType ? (
 				<>
-					<TextInput label="Project name" onSubmit={handleFolderNameSubmit} />
+					<TextInput
+						label="Project name"
+						onSubmit={createProjectFromTemplate}
+					/>
 					{/* <TaskList>
 					<Task
 						label="Created the folder"
