@@ -1,4 +1,4 @@
-import {Box, Text, useInput, useStdin} from 'ink';
+import {Text, useInput, useStdin} from 'ink';
 import React, {useEffect, useState} from 'react';
 
 const TextInput = ({

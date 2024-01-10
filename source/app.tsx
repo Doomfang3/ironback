@@ -1,12 +1,13 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, Text} from 'ink';
 import SelectInput from 'ink-select-input';
 import BigText from 'ink-big-text';
-/* import {Task, TaskList} from 'ink-task-list';
-import spinners from 'cli-spinners'; */
+import {Task, TaskList} from 'ink-task-list';
+import spinners from 'cli-spinners';
 import fs from 'fs';
 import path from 'path';
 import {fileURLToPath} from 'url';
+import {exec} from 'child_process';
 import TextInput from './components/TextInput.js';
 
 /* type Props = {
@@ -37,13 +38,15 @@ export default function App(/* {name = 'Stranger'}: Props */) {
 		error: false,
 		message: '',
 	});
-	const [, /* isFolderCreated */ setIsFolderCreated] = useState(false);
+	const [projectPath, setProjectPath] = useState('');
+	const [isFolderCreated, setIsFolderCreated] = useState(false);
+	const [depsInstalled, setDepsInstalled] = useState(false);
 
 	const createProjectFromTemplate = (projectName: string) => {
 		const __dirname = path.dirname(fileURLToPath(import.meta.url));
 		const templatesDir = path.join(__dirname, 'templates');
 		const projectDir = path.join(process.cwd(), projectName);
-
+		setProjectPath(projectDir);
 		if (fs.existsSync(projectDir)) {
 			setFolderNameAlreadyExists({error: true, message: projectName});
 			return;
@@ -61,6 +64,23 @@ export default function App(/* {name = 'Stranger'}: Props */) {
 		setIsFolderCreated(true);
 	};
 
+	useEffect(() => {
+		if (isFolderCreated) {
+			process.chdir(projectPath);
+			const installCmd = `npm install`;
+			exec(installCmd, (error, stdout, stderr) => {
+				if (error) {
+					console.error(`Error installing dependencies: ${error}`);
+					return;
+				}
+				console.log(stdout);
+				console.error(stderr);
+
+				setDepsInstalled(true);
+			});
+		}
+	}, [isFolderCreated]);
+
 	return (
 		<Box
 			borderStyle="round"
@@ -70,27 +90,38 @@ export default function App(/* {name = 'Stranger'}: Props */) {
 		>
 			{projectType ? (
 				<>
-					<TextInput
-						label="Project name"
-						onSubmit={createProjectFromTemplate}
-					/>
-					{folderNameAlreadyExists.error && (
-						<Text color="red">
-							The folder `{folderNameAlreadyExists.message}` already exists
-						</Text>
+					{isFolderCreated ? (
+						<TaskList>
+							<Task
+								label="Created the folder"
+								state={isFolderCreated ? 'success' : 'loading'}
+								spinner={spinners.dots}
+							/>
+							<Task
+								label="Installing dependencies"
+								state={
+									isFolderCreated
+										? depsInstalled
+											? 'success'
+											: 'loading'
+										: 'pending'
+								}
+								spinner={spinners.dots}
+							/>
+						</TaskList>
+					) : (
+						<>
+							<TextInput
+								label="Project name"
+								onSubmit={createProjectFromTemplate}
+							/>
+							{folderNameAlreadyExists.error && (
+								<Text color="redBright">
+									The folder `{folderNameAlreadyExists.message}` already exists
+								</Text>
+							)}
+						</>
 					)}
-					{/* <TaskList>
-					<Task
-						label="Created the folder"
-						state={isFolderCreated ? 'success' : 'loading'}
-						spinner={spinners.dots}
-					/>
-					<Task
-						label="Installing dependencies"
-						state={isFolderCreated ? 'loading' : 'pending'}
-						spinner={spinners.dots}
-					/>
-				</TaskList> */}
 				</>
 			) : (
 				<>
