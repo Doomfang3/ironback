@@ -33,19 +33,22 @@ const items: Item[] = [
 
 export default function App(/* {name = 'Stranger'}: Props */) {
 	const [projectType, setProjectType] = useState<string | undefined>();
+	const [folderNameAlreadyExists, setFolderNameAlreadyExists] = useState({
+		error: false,
+		message: '',
+	});
 	const [, /* isFolderCreated */ setIsFolderCreated] = useState(false);
 
 	const createProjectFromTemplate = (projectName: string) => {
 		const __dirname = path.dirname(fileURLToPath(import.meta.url));
 		const templatesDir = path.join(__dirname, 'templates');
 		const projectDir = path.join(process.cwd(), projectName);
-		console.log('Project directory path: ', projectDir);
 
-		// Ensure the project directory exists
-		if (!fs.existsSync(projectDir)) {
-			console.log("Don't exists");
-			fs.mkdirSync(projectDir);
+		if (fs.existsSync(projectDir)) {
+			setFolderNameAlreadyExists({error: true, message: projectName});
+			return;
 		}
+		fs.mkdirSync(projectDir);
 
 		// Copy files from the template directory to the new project directory
 		const templatePath = path.join(templatesDir, projectType!);
@@ -71,6 +74,11 @@ export default function App(/* {name = 'Stranger'}: Props */) {
 						label="Project name"
 						onSubmit={createProjectFromTemplate}
 					/>
+					{folderNameAlreadyExists.error && (
+						<Text color="red">
+							The folder `{folderNameAlreadyExists.message}` already exists
+						</Text>
+					)}
 					{/* <TaskList>
 					<Task
 						label="Created the folder"

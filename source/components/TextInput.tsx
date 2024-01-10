@@ -19,7 +19,7 @@ const TextInput = ({
 	useInput((input, key) => {
 		if (key.return) {
 			onSubmit(value);
-		} else if (key.backspace) {
+		} else if (key.backspace || key.delete) {
 			setValue(value.slice(0, -1));
 		} else {
 			setValue(value + input);
@@ -27,11 +27,9 @@ const TextInput = ({
 	});
 
 	return (
-		<Box>
-			<Text>
-				{label} : {value}
-			</Text>
-		</Box>
+		<Text>
+			{label} : {value}
+		</Text>
 	);
 };
 
