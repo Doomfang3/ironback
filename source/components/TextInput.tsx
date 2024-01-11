@@ -12,8 +12,10 @@ const TextInput = ({
 	const {setRawMode} = useStdin();
 
 	useEffect(() => {
-		setRawMode(true);
-		return () => setRawMode(false);
+		if (process.platform !== 'win32') {
+			setRawMode(true);
+			return () => setRawMode(false);
+		}
 	}, [setRawMode]);
 
 	useInput((input, key) => {

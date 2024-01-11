@@ -1,6 +1,6 @@
 {
 	"name": "ironback",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"license": "MIT",
 	"description": "Ironhack CLI to generate mock backends or basic Rest APIs using Express and Mongoose",
 	"bin": "dist/cli.js",
