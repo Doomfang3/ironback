@@ -81,6 +81,16 @@ export default function App({flags: _}: Props) {
 				path.join(projectDir, fileOrDir),
 			);
 		});
+		fs.renameSync(
+			path.join(projectPath, 'gitignore_template'),
+			path.join(projectPath, '.gitignore'),
+		);
+		if (projectType === 'rest') {
+			fs.copyFileSync(
+				path.join(projectPath, 'env_template'),
+				path.join(projectPath, '.env'),
+			);
+		}
 
 		setIsFolderCreated(true);
 	};
