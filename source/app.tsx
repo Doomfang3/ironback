@@ -113,12 +113,16 @@ export default function App(/* {name = 'Stranger'}: Props */) {
 						<>
 							<TaskList>
 								<Task
-									label="Created the folder"
+									label={isFolderCreated ? 'Folder created' : 'Creating folder'}
 									state={isFolderCreated ? 'success' : 'loading'}
 									spinner={spinners.dots}
 								/>
 								<Task
-									label="Installing dependencies"
+									label={
+										depsInstalled
+											? 'Dependencies installed'
+											: 'Installing dependencies'
+									}
 									state={
 										isFolderCreated
 											? depsInstalled
