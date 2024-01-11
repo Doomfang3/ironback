@@ -51,14 +51,32 @@ export default function App(/* {name = 'Stranger'}: Props */) {
 			setFolderNameAlreadyExists({error: true, message: projectName});
 			return;
 		}
-		fs.mkdirSync(projectDir);
-
-		// Copy files from the template directory to the new project directory
+		fs.mkdirSync(projectDir, {recursive: true});
 		const templatePath = path.join(templatesDir, projectType!);
-		fs.readdirSync(templatePath).forEach(file => {
-			const srcFile = path.join(templatePath, file);
-			const destFile = path.join(projectDir, file);
-			fs.copyFileSync(srcFile, destFile);
+
+		// Recursive function to copy files and directories
+		const copyRecursiveSync = (src: string, dest: string) => {
+			const stats = fs.statSync(src);
+
+			if (stats.isDirectory()) {
+				fs.mkdirSync(dest, {recursive: true});
+				fs.readdirSync(src).forEach(childItemName => {
+					copyRecursiveSync(
+						path.join(src, childItemName),
+						path.join(dest, childItemName),
+					);
+				});
+			} else {
+				fs.copyFileSync(src, dest);
+			}
+		};
+
+		// Copy files and directories from the template directory
+		fs.readdirSync(templatePath).forEach(fileOrDir => {
+			copyRecursiveSync(
+				path.join(templatePath, fileOrDir),
+				path.join(projectDir, fileOrDir),
+			);
 		});
 
 		setIsFolderCreated(true);
