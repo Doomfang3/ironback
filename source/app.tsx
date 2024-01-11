@@ -8,6 +8,7 @@ import fs from 'fs';
 import path from 'path';
 import {fileURLToPath} from 'url';
 import {exec} from 'child_process';
+import {useApp} from 'ink';
 import TextInput from './components/TextInput.js';
 
 type Props = {
@@ -33,6 +34,8 @@ const items: Item[] = [
 ];
 
 export default function App({flags: _}: Props) {
+	const {exit} = useApp();
+
 	const [projectType, setProjectType] = useState<string | undefined>();
 	const [folderNameAlreadyExists, setFolderNameAlreadyExists] = useState({
 		error: false,
@@ -98,6 +101,12 @@ export default function App({flags: _}: Props) {
 			});
 		}
 	}, [isFolderCreated]);
+
+	useEffect(() => {
+		if (depsInstalled) {
+			exit();
+		}
+	}, [depsInstalled]);
 
 	return (
 		<Box
