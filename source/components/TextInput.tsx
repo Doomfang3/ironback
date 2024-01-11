@@ -1,8 +1,6 @@
 import {Text, useInput, useStdin} from 'ink';
 import React, {useEffect, useState} from 'react';
 
-const isRawModeSupported = process.stdout.isTTY && process.platform !== 'win32';
-
 const TextInput = ({
 	label,
 	onSubmit,
@@ -11,7 +9,7 @@ const TextInput = ({
 	onSubmit: (name: string) => void;
 }) => {
 	const [value, setValue] = useState('');
-	const {setRawMode} = useStdin();
+	const {isRawModeSupported, setRawMode} = useStdin();
 
 	useEffect(() => {
 		if (!isRawModeSupported) {
