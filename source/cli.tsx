@@ -1,29 +1,26 @@
 #!/usr/bin/env node
 import React from 'react';
 import {render} from 'ink';
-/* import meow from 'meow'; */
+import meow from 'meow';
 import App from './app.js';
 
-/* const cli = meow(
+const cli = meow(
 	`
-	Usage
-	  $ ironback
+Usage
+  $ ironback
 
-	Options
-		--name  Your name
-
-	Examples
-	  $ ironback --name=Jane
-	  Hello, Jane
+Then you need to choose the project type and the project name.
+Ironback will install the dependencies for you.
+After that you just have to cd into your newly created project and start coding💙
 `,
 	{
 		importMeta: import.meta,
 		flags: {
-			name: {
-				type: 'string',
+			help: {
+				alias: 'h',
 			},
 		},
 	},
-); */
+);
 
-render(<App /* name={cli.flags.name} */ />);
+render(<App flags={cli.flags} />);

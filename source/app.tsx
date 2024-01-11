@@ -10,9 +10,9 @@ import {fileURLToPath} from 'url';
 import {exec} from 'child_process';
 import TextInput from './components/TextInput.js';
 
-/* type Props = {
-	name: string | undefined;
-}; */
+type Props = {
+	flags: {help: unknown} & Record<string, unknown>;
+};
 
 const primaryColor = '#2DC5FA';
 
@@ -32,7 +32,7 @@ const items: Item[] = [
 	},
 ];
 
-export default function App(/* {name = 'Stranger'}: Props */) {
+export default function App({flags: _}: Props) {
 	const [projectType, setProjectType] = useState<string | undefined>();
 	const [folderNameAlreadyExists, setFolderNameAlreadyExists] = useState({
 		error: false,
@@ -47,14 +47,15 @@ export default function App(/* {name = 'Stranger'}: Props */) {
 		const templatesDir = path.join(__dirname, 'templates');
 		const projectDir = path.join(process.cwd(), projectName);
 		setProjectPath(projectDir);
+
 		if (fs.existsSync(projectDir)) {
 			setFolderNameAlreadyExists({error: true, message: projectName});
 			return;
 		}
+
 		fs.mkdirSync(projectDir, {recursive: true});
 		const templatePath = path.join(templatesDir, projectType!);
 
-		// Recursive function to copy files and directories
 		const copyRecursiveSync = (src: string, dest: string) => {
 			const stats = fs.statSync(src);
 
@@ -71,7 +72,6 @@ export default function App(/* {name = 'Stranger'}: Props */) {
 			}
 		};
 
-		// Copy files and directories from the template directory
 		fs.readdirSync(templatePath).forEach(fileOrDir => {
 			copyRecursiveSync(
 				path.join(templatePath, fileOrDir),
