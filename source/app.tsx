@@ -59,17 +59,6 @@ export default function App({flags: _}: Props) {
 		fs.mkdirSync(projectDir, {recursive: true});
 		const templatePath = path.join(templatesDir, projectType!);
 
-		fs.renameSync(
-			path.join(templatePath, 'gitignore_template'),
-			path.join(templatePath, '.gitignore'),
-		);
-		if (projectType === 'rest') {
-			fs.copyFileSync(
-				path.join(templatePath, 'env_template'),
-				path.join(templatePath, '.env'),
-			);
-		}
-
 		const copyRecursiveSync = (src: string, dest: string) => {
 			const stats = fs.statSync(src);
 
@@ -82,7 +71,13 @@ export default function App({flags: _}: Props) {
 					);
 				});
 			} else {
-				fs.copyFileSync(src, dest);
+				if (path.basename(src) === 'ignore_template') {
+					fs.copyFileSync(src, path.join(path.dirname(dest), '.gitignore'));
+				} else if (path.basename(src) === 'env_template') {
+					fs.copyFileSync(src, path.join(path.dirname(dest), '.env'));
+				} else {
+					fs.copyFileSync(src, dest);
+				}
 			}
 		};
 
