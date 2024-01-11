@@ -88,27 +88,41 @@ export default function App(/* {name = 'Stranger'}: Props */) {
 			flexDirection="column"
 			paddingLeft={1}
 		>
+			<BigText text="Ironback" font="tiny" colors={[primaryColor]} />
 			{projectType ? (
 				<>
 					{isFolderCreated ? (
-						<TaskList>
-							<Task
-								label="Created the folder"
-								state={isFolderCreated ? 'success' : 'loading'}
-								spinner={spinners.dots}
-							/>
-							<Task
-								label="Installing dependencies"
-								state={
-									isFolderCreated
-										? depsInstalled
-											? 'success'
-											: 'loading'
-										: 'pending'
-								}
-								spinner={spinners.dots}
-							/>
-						</TaskList>
+						<>
+							<TaskList>
+								<Task
+									label="Created the folder"
+									state={isFolderCreated ? 'success' : 'loading'}
+									spinner={spinners.dots}
+								/>
+								<Task
+									label="Installing dependencies"
+									state={
+										isFolderCreated
+											? depsInstalled
+												? 'success'
+												: 'loading'
+											: 'pending'
+									}
+									spinner={spinners.dots}
+								/>
+							</TaskList>
+							{depsInstalled && (
+								<>
+									<Text>
+										You can now <Text color="yellow">cd</Text> into your new
+										project
+									</Text>
+									<Text color={primaryColor}>
+										🎉 Have fun and happy coding 💙
+									</Text>
+								</>
+							)}
+						</>
 					) : (
 						<>
 							<TextInput
@@ -125,7 +139,6 @@ export default function App(/* {name = 'Stranger'}: Props */) {
 				</>
 			) : (
 				<>
-					<BigText text="Ironback" font="tiny" colors={[primaryColor]} />
 					<Text>What do you need ?</Text>
 					<SelectInput
 						items={items}
