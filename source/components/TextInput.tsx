@@ -9,12 +9,9 @@ const TextInput = ({
 	onSubmit: (name: string) => void;
 }) => {
 	const [value, setValue] = useState('');
-	const {isRawModeSupported, setRawMode} = useStdin();
+	const {setRawMode} = useStdin();
 
 	useEffect(() => {
-		if (!isRawModeSupported) {
-			return;
-		}
 		setRawMode(true);
 		return () => setRawMode(false);
 	}, [setRawMode]);

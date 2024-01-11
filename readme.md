@@ -2,14 +2,16 @@
 
 ## Getting started
 
+**DISCLAIMER: It doesn't run on Git Bash, you need to use a real TTY (Teletypewriter)**
+
 ```bash
-$ npx ironback@latest
+$ npx ironback
 ```
 
 ## CLI
 
 ```
-$ npx ironback@latest --help
+$ npx ironback --help
 
   Usage
   $ ironback
