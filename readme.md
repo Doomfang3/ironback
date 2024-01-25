@@ -2,7 +2,7 @@
 
 ## Getting started
 
-**DISCLAIMER: It doesn't run on Git Bash, you need to use a real TTY (Teletypewriter)**
+**DISCLAIMER: It doesn't run on older version of Git Bash (from version 2.41.0.windows.3 seems ok) otherwise you need to use a real TTY (Teletypewriter)**
 
 ```bash
 $ npx ironback
