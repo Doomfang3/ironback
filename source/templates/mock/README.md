@@ -3,8 +3,10 @@
 You can run the project using
 
 ```
-npm run dev
+npm run start
 ```
+
+Remember that if you change something manually in a file you need to kill your server and run it again
 
 > Remember to install the dependencies if you need to with `npm i`
 
